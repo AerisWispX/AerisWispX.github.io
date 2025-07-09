@@ -100,18 +100,189 @@
 
 
 
-</body>
 
   
  
 
   
   
-  <a href="https://t.me/+h1B5P9BKxRBkMmJl" target="_blank">
-<span style="position: absolute; z-index: 100; top: 10px; left: 10px; height: 25px; width: 100px; color: rgb(204, 204, 204); border: 2px solid rgb(204, 204, 204); padding: 1px 0px; border-radius: 10x; text-align: center;">
-Join us
-</span>
-</a>
+ <style>
+        /* Glassmorphism button */
+        .glass-button {
+            position: absolute;
+            z-index: 100;
+            top: 10px;
+            left: 10px;
+            height: 25px;
+            width: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 2px solid rgba(204, 204, 204, 0.3);
+            border-radius: 12px;
+            color: #cccccc;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+            text-align: center;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 
+                0 4px 16px rgba(0, 0, 0, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2),
+                0 0 0 1px rgba(255, 255, 255, 0.05);
+        }
 
+        /* Animated gradient overlay */
+        .glass-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(255, 255, 255, 0.3), 
+                transparent
+            );
+            transition: left 0.5s ease;
+        }
+
+        /* Ripple effect */
+        .glass-button::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, transparent 70%);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.4s ease, height 0.4s ease;
+        }
+
+        /* Hover effects */
+        .glass-button:hover {
+            transform: translateY(-1px);
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(204, 204, 204, 0.5);
+            color: #ffffff;
+            box-shadow: 
+                0 8px 25px rgba(0, 0, 0, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3),
+                0 0 0 1px rgba(255, 255, 255, 0.1);
+        }
+
+        .glass-button:hover::before {
+            left: 100%;
+        }
+
+        .glass-button:hover::after {
+            width: 120px;
+            height: 120px;
+        }
+
+        /* Subtle pulse animation */
+        .glass-button {
+            animation: subtlePulse 4s ease-in-out infinite;
+        }
+
+        @keyframes subtlePulse {
+            0%, 100% {
+                box-shadow: 
+                    0 4px 16px rgba(0, 0, 0, 0.1),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+                    0 0 0 1px rgba(255, 255, 255, 0.05);
+            }
+            50% {
+                box-shadow: 
+                    0 4px 16px rgba(0, 0, 0, 0.1),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+                    0 0 0 1px rgba(255, 255, 255, 0.05),
+                    0 0 0 8px rgba(204, 204, 204, 0.1);
+            }
+        }
+
+        /* Active state */
+        .glass-button:active {
+            transform: translateY(0);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        /* Sparkle effects */
+        .sparkle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            animation: sparkle 3s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        .sparkle:nth-child(1) {
+            top: 6px;
+            left: 15px;
+            animation-delay: 0s;
+        }
+
+        .sparkle:nth-child(2) {
+            top: 15px;
+            right: 20px;
+            animation-delay: 1s;
+        }
+
+        .sparkle:nth-child(3) {
+            bottom: 8px;
+            left: 70px;
+            animation-delay: 2s;
+        }
+
+        @keyframes sparkle {
+            0%, 100% {
+                opacity: 0;
+                transform: scale(0);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Floating shimmer */
+        .glass-button .shimmer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
+            animation: shimmer 3s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes shimmer {
+            0% {
+                transform: translateX(-100%) skewX(-20deg);
+            }
+            100% {
+                transform: translateX(200%) skewX(-20deg);
+            }
+        }
+    </style>
+
+    <a href="https://t.me/+h1B5P9BKxRBkMmJl" target="_blank" class="glass-button">
+        <span class="sparkle"></span>
+        <span class="sparkle"></span>
+        <span class="sparkle"></span>
+        <span class="shimmer"></span>
+        Join us
+    </a>
 
 
