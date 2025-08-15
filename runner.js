@@ -1,6 +1,6 @@
 // Configuration - Update these URLs to match your setup
-const PHP_API_URL = 'stream.php';
-const MATCH_DETAILS_URL = 'stream.php';
+const PHP_API_URL = 'https://watchasports.com/stream.php';
+const MATCH_DETAILS_URL = 'https://watchasports.com/stream.php';
 
 // Cache for match details to avoid excessive API calls
 const matchDetailsCache = new Map();
