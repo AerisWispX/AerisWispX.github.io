@@ -166,7 +166,7 @@
 
    a:focus,
    a:hover {
-       color: #0f6f37;
+       color: #8000FF;
        transition: .5s ease;
    }
 
@@ -194,7 +194,7 @@
    .navbar-brand {
        float: right;
        position: relative;
-       background-color: #0f6f37;
+       background-color: #8000FF;
        margin: 8px 0;
        padding: 3px 5px;
        border-radius: 8px;
@@ -224,7 +224,7 @@
        font-weight: 500;
        padding: 6px 15px;
        display: grid;
-       background: #0f6f37;
+       background: #8000FF;
        margin-right: 10px;
        border-radius: 8px;
        box-shadow: 0 0 4px rgba(0, 0, 0, .3);
@@ -315,7 +315,7 @@
    .box-title h3,
    .nav-tabs li a {
        font-size: 11px;
-       background: #0f6f37;
+       background: #8000FF;
        color: #fff;
        float: right;
        padding: 0 10px;
@@ -361,7 +361,7 @@
    }
 
    .footermb a {
-       background: #0f6f37;
+       background: #8000FF;
        color: #fff;
        margin-right: 10px;
        font-size: 13px;
@@ -437,7 +437,7 @@
    }
 
    #postsacs a:hover {
-       color: #0f6f37;
+       color: #8000FF;
    }
 
    #postsacs p {
@@ -481,7 +481,7 @@
 
    #postsacs .video-serv a {
        float: right;
-       background: #0f6f37;
+       background: #8000FF;
        border-radius: 8px;
        text-shadow: 0 1px 1px #000;
        color: #fff;
@@ -546,7 +546,7 @@
 
    .share-links li a {
        font-size: 15px;
-       background: #0f6f37;
+       background: #8000FF;
        padding: 5px 10px;
        height: 30px;
        display: block;
@@ -614,7 +614,7 @@
 
    blockquote a {
        margin: 0 15px;
-       color: #0f6f37
+       color: #8000FF
    }
 
    @media screen and (max-width:1000px) {
@@ -643,7 +643,7 @@
            padding: 13px 0 0 0;
            height: 31.5px;
            width: 40px;
-           background: #0f6f37;
+           background: #8000FF;
            margin-right: 15px;
            box-shadow: 0 0 4px rgba(0, 0, 0, .3)
        }
@@ -1124,7 +1124,7 @@
 
    a:focus,
    a:hover {
-       color: #0f6f37;
+       color: #8000FF;
        transition: .5s ease;
    }
 
@@ -1153,7 +1153,7 @@
    .navbar-brand {
        float: right;
        position: relative;
-       background-color: #0f6f37;
+       background-color: #8000FF;
        margin: 8px 0;
        padding: 3px 5px;
        border-radius: 8px;
@@ -1183,7 +1183,7 @@
        font-weight: 500;
        padding: 6px 15px;
        display: grid;
-       background: #0f6f37;
+       background: #8000FF;
        margin-right: 10px;
        border-radius: 8px;
        box-shadow: 0 0 4px rgba(0, 0, 0, .3);
@@ -1274,7 +1274,7 @@
    .box-title h3,
    .nav-tabs li a {
        font-size: 15px;
-       background: #0f6f37;
+       background: #8000FF;
        color: #fff;
        float: right;
        padding: 0 10px;
@@ -1320,7 +1320,7 @@
    }
 
    .footermb a {
-       background: #0f6f37;
+       background: #8000FF;
        color: #fff;
        margin-right: 10px;
        font-size: 13px;
@@ -1449,7 +1449,7 @@
    }
 
    .matchTime .soon {
-       background: #0f6f37
+       background: #8000FF
    }
 
    .md4.info,
@@ -1599,7 +1599,7 @@
            padding: 13px 0 0 0;
            height: 31.5px;
            width: 40px;
-           background: #0f6f37;
+           background: #8000FF;
            margin-right: 15px;
            box-shadow: 0 0 4px rgba(0, 0, 0, .3)
        }
