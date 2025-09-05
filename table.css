@@ -1,0 +1,479 @@
+clasico-matchup-container {
+background: #1a1a1a00;
+border-radius: 15px;
+padding: 1px;
+max-width: 100%;
+margin: 20px auto;
+}
+.tournament-header {
+display: flex;
+align-items: center;
+justify-content: center;
+gap: 10px;
+padding: 15px;
+background: #262626;
+border-radius: 10px;
+margin-bottom: 15px;
+}
+.tournament-header img {
+width: 25px; /* Reduced from 30px */
+height: 25px; /* Reduced from 30px */
+}
+.tournament-header h2 {
+color: #fff;
+font-size: 1.1em; /* Reduced from 1.2em */
+margin: 0;
+}
+.match-time {
+text-align: center;
+color: #636e72;
+margin: 15px 0;
+font-size: 0.9em;
+opacity: 0.9;
+}
+.teams-container {
+flex-wrap: nowrap;
+flex-direction: row;
+align-content: stretch;
+display: flex;
+align-items: center;
+justify-content: center;
+gap: 10px;
+padding: 15px;
+background: #262626;
+border-radius: 10px;
+margin-bottom: 15px;
+}
+.team {
+display: flex;
+flex-direction: column;
+align-items: center;
+flex: 1;
+}
+.team img {
+width: 25px; /* Reduced from 50px */
+height: 25px; /* Reduced from 50px */
+margin-bottom: 8px; /* Reduced from 10px */
+}
+.team span {
+color: #fff;
+font-size: 1em; /* Reduced from 1.1em */
+text-align: center;
+}
+.vs {
+color: #9f9f9f;
+font-weight: bold;
+padding: 0 20px;
+}
+.cta-button {
+text-align: center;
+margin: 20px 0;
+}
+.cta-button a {
+background: #4CAF50;
+color: #fff !important;
+padding: 12px 30px;
+border-radius: 25px;
+text-decoration: none;
+font-weight: bold;
+display: inline-block;
+transition: background 0.3s ease;
+font-size: 0.9em; /* Slightly smaller text */
+}
+.cta-button a:hover {
+background: #45a049;
+}
+@media (max-width: 480px) {
+.teams-container {
+flex-direction: row;
+gap: 15px; /* Reduced from 20px */
+}
+.team {
+flex-direction: row;
+gap: 10px; /* Reduced from 15px */
+}
+.vs {
+padding: 5px 0; /* Reduced padding */
+}
+.team img {
+width: 35px; /* Smaller for mobile */
+height: 35px;
+}
+}
+.live-info-01 {
+width: 100%;
+background: #1a1a1a;
+border-radius: 10px;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+margin-top: 15px;
+border-bottom-left-radius: 0;
+border-bottom-right-radius: 0;
+padding: 0px;
+color: white;
+}
+.live-info-01 p {
+font-size: 12px;
+font-weight: 500;
+}
+.preview-tes {
+margin-top: 5px !important;
+border-top-left-radius: 0px !important;
+border-top-right-radius: 0px !important;
+border-bottom-left-radius: 10px !important;
+border-bottom-right-radius: 10px !important;
+}
+.click-here-btn-red {
+width: 100%;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+padding-bottom: 5px;
+padding-top: 5px;
+color: white;
+}
+.click-here-btn-red a {
+margin-top: 6px;
+width: 10rem;
+text-align: center;
+background: green;
+height: 2.6rem;
+display: flex;
+align-items: center;
+justify-content: center;
+border-radius: 50px;
+font-size: 15px;
+color: white!important;
+}
+.container-02 {
+display: flex;
+flex-direction: column;
+align-items: center;
+background: black;
+height: 100vh;
+}
+.container-03 {
+width: 100%;
+background: #1a1a1a;
+border-radius: 10px;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+margin-top: 16px;
+padding: 0px;
+}
+.container-03 h2 {
+color: white;
+font-size: 15px;
+font-weight: 500;
+}
+@media (max-width: 1024px) {
+.container-03 {
+width: 100%;
+}
+}
+.container-04-id-11 {
+width: 100%;
+background: #1a1a1a;
+border-radius: 10px;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+}
+.container-04-id-11 h2 {
+color: white;
+font-size: 15px;
+font-weight: 500;
+}
+@media (max-width: 1024px) {
+.container-04-id-11 {
+width: 100%;
+}
+}
+.container-05-id-11 {
+width: 100%;
+background: #262626;
+border-top-left-radius: 10px;
+border-top-right-radius: 10px;
+border-bottom-left-radius: 10px;
+border-bottom-right-radius: 10px;
+display: flex;
+align-items: center;
+padding: 0px;
+gap: 8px;
+justify-content: center;
+}
+.container-05-id-11 img {
+width: 23px;
+}
+.container-05-id-11 h2 {
+color: white;
+font-size: 13px;
+font-weight: 500;
+}
+.container-06-id-11 {
+width: 100%;
+height: 3rem;
+background: #1a1a1a;
+border-radius: 10px;
+display: flex;
+align-items: center;
+justify-content: center;
+}
+.container-07-id-11 {
+display: flex;
+gap: 9px;
+width: 100%;
+align-items: center;
+justify-content: flex-end;
+font-weight: 500;
+}
+.container-07-id-11 span {
+color: white;
+font-size: 15px;
+font-weight: 300;
+}
+.container-07-id-11 img {
+width: 23px;
+}
+@media (max-width:1024px) {
+.container-07-id-11 span {
+font-size: 13px;
+font-weight: 300;
+}
+}
+.container-08 {
+display: flex;
+flex-direction: column;
+align-items: center;
+color: #9ca3af;
+font-weight: 600;
+width: 15rem;
+font-size: 12px;
+}
+.container-09-id-11 {
+display: flex;
+gap: 9px;
+width: 100%;
+align-items: center;
+font-weight: 500;
+}
+.container-09-id-11 img {
+width: 23px;
+}
+.container-09-id-11 span {
+color: white;
+font-size: 15px;
+font-weight: 300;
+}
+@media (max-width:1024px) {
+.container-09-id-11 span {
+font-size: 13px;
+font-weight: 300;
+}
+}
+.container-10-id-11 {
+width: 10rem;
+display: flex;
+align-items: center;
+justify-content: center;
+color: #9f9f9f;
+font-size: 11px;
+font-weight: 500;
+}
+.date-time-my {
+margin-top: 10px;
+}
+.date-time-my h2 {
+text-align: center;
+font-size: 14px !important;
+font-weight: 300 !important;
+}
+.container ul {
+padding: 10px 0;
+}
+.container ul li {
+list-style-type: none;
+padding: 10px 15px;
+border-bottom: 1px solid #f2f2f2;
+}
+.container ul li .title {
+display: flex;
+flex-direction: row;
+align-items: initial;
+font-size: 16px;
+}
+.container ul li .title .time {
+color: #02569d;
+padding-right: 16px;
+display: inline-block;
+font-weight: bold;
+}
+.container ul li .title .event {
+display: inline-block;
+}
+.container ul li .channel {
+padding: 5px 0 5px 56px;
+}
+.container ul li .channel i {
+font-style: normal;
+font-size: 12px;
+background: #ddd;
+padding: 3px 5px;
+margin: 5px 15px 0 0;
+display: inline-block;
+}
+input.MyButton {
+width: 200px;
+padding: 20px;
+cursor: pointer;
+font-weight: bold;
+font-size: 100%;
+background: #fc1212;
+color: #fff;
+border: 1px solid #fc1212;
+border-radius: 10px;
+}
+input.MyButton:hover {
+color: #ff0000;
+background: #000;
+border: 1px solid #fff;
+}
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+}
+/* Main container */
+.notification-bar {
+background-color: #000; /* Black background */
+color: #fff; /* White text for contrast */
+padding: 20px 30px;
+border-radius: 10px;
+display: flex;
+justify-content: space-between;
+align-items: center;
+max-width: 1200px;
+margin: 20px auto;
+}
+/* Content area */
+.content {
+flex: 1;
+}
+.content h2 {
+font-size: 24px;
+margin-bottom: 10px;
+color: #fff; /* Ensure H2 text is white */
+}
+.content p {
+font-size: 14px;
+line-height: 1.5;
+color: #ccc; /* Light gray for paragraph text */
+}
+/* Buttons */
+.buttons {
+display: flex;
+gap: 15px;
+margin-top: 20px;
+}
+.button {
+display: inline-flex;
+align-items: center;
+padding: 10px 20px;
+font-size: 16px;
+text-decoration: none;
+border-radius: 5px;
+transition: all 0.3s ease;
+color: #fff; /* Button text color */
+gap: 10px; /* Space between icon and text */
+}
+.button.facebook {
+background-color: #1877f2; /* Facebook blue */
+}
+.button.whatsapp {
+background-color: #25d366; /* WhatsApp green */
+}
+.button:hover {
+opacity: 0.9;
+}
+/* Icon container */
+.icon-container {
+display: flex;
+align-items: center;
+}
+.football-icon {
+width: 100px;
+height: 100px;
+border-radius: 50%;
+background-color: #fff;
+display: flex;
+justify-content: center;
+align-items: center;
+border: 2px solid #ccc;
+}
+.football-icon img {
+width: 80%;
+height: 80%;
+object-fit: contain;
+}
+/* Responsive design */
+@media (max-width: 768px) {
+.notification-bar {
+flex-direction: column;
+align-items: flex-start;
+}
+.icon-container {
+margin-top: 20px;
+}
+.football-icon {
+width: 80px;
+height: 80px;
+}
+}/* Responsive design */
+@media (max-width: 768px) {
+.notification-bar {
+flex-direction: column;
+align-items: center; /* Center items vertically */
+text-align: center; /* Center text */
+}
+.content {
+text-align: center; /* Center align text */
+}
+.buttons {
+flex-direction: column; /* Stack buttons vertically */
+gap: 10px; /* Reduced gap for better spacing */
+}
+.button {
+width: 100%; /* Full-width buttons */
+padding: 12px; /* Adjust padding for mobile */
+font-size: 16px; /* Slightly larger font for readability */
+}
+.icon-container {
+margin-top: 20px; /* Add spacing between content and icon */
+}
+.football-icon {
+width: 80px;
+height: 80px;
+}
+}
+@media (max-width: 480px) {
+.content h2 {
+font-size: 20px; /* Reduce heading size for very small screens */
+}
+.content p {
+font-size: 14px; /* Reduce paragraph size */
+}
+.button {
+padding: 10px; /* Further reduce padding */
+font-size: 14px; /* Adjust font size */
+}
+.football-icon {
+width: 60px;
+height: 60px;
+}
+}
