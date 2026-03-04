@@ -2,122 +2,274 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
 <meta name="referrer" content="no-referrer">
 <title>HelloSports Player</title>
-
 <script src="https://content.jwplatform.com/libraries/SAHhwvZq.js"></script>
 <script>jwplayer.key = "XSuP4qMl+9tK17QNb+4+th2Pm9AWgMO/cYH8CI0HGGr7bdjo";</script>
-
 <style>
-html, body {
-    margin: 0;
-    padding: 0;
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
     width: 100%;
     height: 100%;
-    background: black;
-}
+    overflow: hidden;
+    background: #000;
+    font-family: sans-serif;
+  }
 
-#player {
+  #player-wrap {
+    position: relative;
     width: 100%;
     height: 100%;
-}
+  }
 
-/* Watermark */
-.watermark-link {
+  #player {
+    width: 100% !important;
+    height: 100% !important;
+  }
+
+  /* Watermark badge */
+  .wm {
     position: absolute;
     top: 10px;
     left: 10px;
     z-index: 9999;
+    pointer-events: auto;
+  }
+
+  .wm a {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
     background: #D50000;
-    color: white;
-    padding: 6px 12px;
-    font-size: 14px;
-    font-weight: bold;
-    border-radius: 4px;
+    color: #fff;
+    padding: 5px 11px;
+    font-size: 13px;
+    font-weight: 700;
+    border-radius: 5px;
     text-decoration: none;
-    font-family: sans-serif;
+    letter-spacing: 0.3px;
     animation: pulse 2.5s infinite ease-in-out;
-}
-@keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.6;} }
-.watermark-link:hover { background: #FF1744; }
+    box-shadow: 0 2px 8px rgba(213,0,0,0.5);
+    transition: background 0.2s;
+  }
+
+  .wm a:hover { background: #FF1744; }
+
+  .wm a svg {
+    width: 14px;
+    height: 14px;
+    fill: #fff;
+    flex-shrink: 0;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%       { opacity: 0.75; transform: scale(0.97); }
+  }
+
+  /* Error / no-stream state */
+  #error-msg {
+    display: none;
+    position: absolute;
+    inset: 0;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 14px;
+    color: #fff;
+    text-align: center;
+    padding: 24px;
+  }
+
+  #error-msg.show { display: flex; }
+
+  #error-msg svg { width: 52px; height: 52px; opacity: 0.4; }
+
+  #error-msg p { font-size: 16px; opacity: 0.65; max-width: 300px; line-height: 1.5; }
+
+  #error-msg a {
+    margin-top: 6px;
+    background: #D50000;
+    color: #fff;
+    padding: 9px 20px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+
+  #error-msg a:hover { background: #FF1744; }
+
+  /* Loading spinner shown before JW fires up */
+  #loader {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #000;
+    z-index: 10;
+    transition: opacity 0.4s;
+  }
+
+  #loader.hidden { opacity: 0; pointer-events: none; }
+
+  .spinner {
+    width: 44px;
+    height: 44px;
+    border: 4px solid rgba(255,255,255,0.15);
+    border-top-color: #D50000;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
 </style>
-
-<script>
-// Disable right click
-document.oncontextmenu = () => false;
-
-// Get URL param
-function getParam(name) {
-    const url = new URL(window.location.href);
-    return url.searchParams.get(name) || "";
-}
-
-// Get stream
-let get = getParam("get");
-let fileUrl = "";
-
-// If base64 provided
-if (get) {
-    try {
-        fileUrl = atob(get);
-    } catch (e) {
-        fileUrl = get;
-    }
-} else {
-    // Or direct ?file=
-    fileUrl = getParam("file");
-}
-
-// Auto-detect type
-let fileType = "hls";
-if (fileUrl.toLowerCase().includes(".mpd")) {
-    fileType = "dash";
-} else if (fileUrl.toLowerCase().includes(".m3u8")) {
-    fileType = "hls";
-}
-</script>
 </head>
-
 <body>
 
-<a href="https://www.hellosports.live" target="_blank" class="watermark-link">HelloSports.live</a>
+<div id="player-wrap">
 
-<div id="player"></div>
+  <!-- Loading overlay -->
+  <div id="loader"><div class="spinner"></div></div>
+
+  <!-- Watermark -->
+  <div class="wm">
+    <a href="https://www.hellosports.live" target="_blank" rel="noopener">
+      <!-- Play icon -->
+      <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+      HelloSports.live
+    </a>
+  </div>
+
+  <!-- No-stream error -->
+  <div id="error-msg">
+    <svg viewBox="0 0 24 24" fill="white"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10
+      10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+    <p>No stream URL provided. Please supply a valid <code>?file=</code> or <code>?get=</code> parameter.</p>
+    <a href="https://www.hellosports.live" target="_blank" rel="noopener">Visit HelloSports.live</a>
+  </div>
+
+  <div id="player"></div>
+</div>
 
 <script>
-if (!fileUrl) {
-    document.body.innerHTML = "<h2 style='color:white;text-align:center;margin-top:20%'>No stream URL provided</h2>";
-} else {
-    jwplayer("player").setup({
-        file: fileUrl,
-        type: fileType,   // 🔥 Auto: hls or dash
+(function () {
+  "use strict";
 
-        primary: "html5",
-        width: "100%",
-        height: "100%",
-        aspectratio: "16:9",
-        autostart: true,
-        mute: false,
-        preload: "auto",
-        lowLatency: true,
-        stretching: "fill",
+  /* ── helpers ─────────────────────────────── */
+  function param(name) {
+    try {
+      return new URL(window.location.href).searchParams.get(name) || "";
+    } catch (_) { return ""; }
+  }
 
-        dashjsConfig: {
-            fastSwitchEnabled: true
-        },
+  function safeAtob(str) {
+    try { return atob(str); } catch (_) { return str; }
+  }
 
-        logo: {
-            file: "https://t.me/hellosportslive",
-            link: "https://t.me/+F1CiA4-9d7dmOWM1",
-            position: "top-right"
-        },
+  function detectType(url) {
+    const u = url.toLowerCase();
+    if (u.includes(".mpd"))  return "dash";
+    if (u.includes(".m3u8")) return "hls";
+    // Fallback: treat as hls
+    return "hls";
+  }
 
-        sharing: {},
-        cast: {}
-    });
-}
+  /* ── parse stream URL ────────────────────── */
+  const get      = param("get");
+  const fileUrl  = get ? safeAtob(get) : param("file");
+  const loader   = document.getElementById("loader");
+  const errorEl  = document.getElementById("error-msg");
+
+  /* Disable right-click */
+  document.addEventListener("contextmenu", e => e.preventDefault());
+
+  /* ── no URL ──────────────────────────────── */
+  if (!fileUrl) {
+    loader.classList.add("hidden");
+    errorEl.classList.add("show");
+    return;
+  }
+
+  /* ── JW Player setup ─────────────────────── */
+  const player = jwplayer("player");
+
+  player.setup({
+    file:        fileUrl,
+    type:        detectType(fileUrl),
+    primary:     "html5",
+    width:       "100%",
+    height:      "100%",
+    autostart:   true,
+    mute:        false,
+    preload:     "auto",
+    stretching:  "fill",
+
+    /* Low-latency live */
+    hlshtml:     true,
+
+    /* DASH tuning */
+    dashjsConfig: {
+      fastSwitchEnabled:          true,
+      lowLatencyEnabled:          true,
+      liveDelay:                  3,
+      liveCatchUpPlaybackRate:    0.5
+    },
+
+    /* Branding */
+    logo: {
+      file:     "https://t.me/hellosportslive",
+      link:     "https://t.me/+F1CiA4-9d7dmOWM1",
+      position: "top-right",
+      hide:     false
+    },
+
+    /* UI */
+    displaytitle:    false,
+    displaydescription: false,
+
+    /* Sharing / cast */
+    sharing: {},
+    cast:    {}
+  });
+
+  /* ── event hooks ─────────────────────────── */
+  player.on("ready",   () => loader.classList.add("hidden"));
+  player.on("firstFrame", () => loader.classList.add("hidden"));
+
+  player.on("error", function (e) {
+    console.warn("JW Error:", e);
+    loader.classList.add("hidden");
+    // JW shows its own error UI — no need to show ours
+  });
+
+  /* Resize: keep JW filling the container */
+  function onResize() {
+    const w = window.innerWidth;
+    const h = window.innerHeight;
+    try { player.resize(w, h); } catch (_) {}
+  }
+
+  window.addEventListener("resize", onResize);
+
+  /* Allow parent page to send a new stream URL via postMessage:
+     parent: iframeEl.contentWindow.postMessage({ hsUrl: "https://..." }, "*") */
+  window.addEventListener("message", function (ev) {
+    if (ev.data && ev.data.hsUrl) {
+      const url = ev.data.hsUrl;
+      loader.classList.remove("hidden");
+      errorEl.classList.remove("show");
+      player.load([{ file: url, type: detectType(url) }]);
+      player.play();
+    }
+  });
+
+})();
 </script>
-
 </body>
 </html>
