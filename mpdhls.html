@@ -7,232 +7,274 @@
 <meta name="referrer" content="no-referrer">
 <title>HelloSports Player</title>
 
+<!-- Shaka Player UI bundle (includes both player + UI) -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/shaka-player.ui.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/controls.min.css">
 
 <style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-*,*::before,*::after{
-box-sizing:border-box;
-margin:0;
-padding:0
-}
+  html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: #000;
+    font-family: sans-serif;
+  }
 
-html,body{
-width:100%;
-height:100%;
-overflow:hidden;
-background:#000;
-font-family:sans-serif
-}
+  #player-wrap {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
 
-#player-wrap{
-position:relative;
-width:100%;
-height:100%
-}
+  #shaka-container {
+    width: 100%;
+    height: 100%;
+    background: #000;
+  }
 
-#shaka-container{
-width:100%;
-height:100%;
-background:#000
-}
+  #shaka-container video {
+    width: 100%;
+    height: 100%;
+    background: #000;
+  }
 
-#shaka-container video{
-width:100%;
-height:100%;
-background:#000
-}
+  /* Watermark badge */
+  .wm {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 9999;
+    pointer-events: auto;
+  }
 
-/* watermark */
+  .wm a {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #D50000;
+    color: #fff;
+    padding: 5px 11px;
+    font-size: 13px;
+    font-weight: 700;
+    border-radius: 5px;
+    text-decoration: none;
+    letter-spacing: 0.3px;
+    animation: pulse 2.5s infinite ease-in-out;
+    box-shadow: 0 2px 8px rgba(213,0,0,0.5);
+    transition: background 0.2s;
+  }
 
-.wm{
-position:absolute;
-top:10px;
-left:10px;
-z-index:9999
-}
+  .wm a:hover { background: #FF1744; }
 
-.wm a{
-display:inline-flex;
-align-items:center;
-gap:6px;
-background:#D50000;
-color:#fff;
-padding:5px 11px;
-font-size:13px;
-font-weight:700;
-border-radius:5px;
-text-decoration:none;
-letter-spacing:.3px;
-animation:pulse 2.5s infinite ease-in-out;
-box-shadow:0 2px 8px rgba(213,0,0,.5)
-}
+  .wm a svg {
+    width: 14px;
+    height: 14px;
+    fill: #fff;
+    flex-shrink: 0;
+  }
 
-.wm a:hover{
-background:#FF1744
-}
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%       { opacity: 0.75; transform: scale(0.97); }
+  }
 
-.wm svg{
-width:14px;
-height:14px;
-fill:#fff
-}
+  /* Error state */
+  #error-msg {
+    display: none;
+    position: absolute;
+    inset: 0;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 14px;
+    color: #fff;
+    text-align: center;
+    padding: 24px;
+    background: #000;
+    z-index: 20;
+  }
 
-@keyframes pulse{
-0%,100%{opacity:1;transform:scale(1)}
-50%{opacity:.75;transform:scale(.97)}
-}
+  #error-msg.show { display: flex; }
+  #error-msg svg { width: 52px; height: 52px; opacity: 0.4; }
+  #error-msg p { font-size: 16px; opacity: 0.65; max-width: 300px; line-height: 1.5; }
 
-/* loader */
+  #error-msg a {
+    margin-top: 6px;
+    background: #D50000;
+    color: #fff;
+    padding: 9px 20px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
 
-#loader{
-position:absolute;
-inset:0;
-display:flex;
-align-items:center;
-justify-content:center;
-background:#000;
-z-index:10
-}
+  #error-msg a:hover { background: #FF1744; }
 
-.spinner{
-width:44px;
-height:44px;
-border:4px solid rgba(255,255,255,.15);
-border-top-color:#D50000;
-border-radius:50%;
-animation:spin .8s linear infinite
-}
+  /* Loading spinner */
+  #loader {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #000;
+    z-index: 10;
+    transition: opacity 0.4s;
+  }
 
-@keyframes spin{
-to{transform:rotate(360deg)}
-}
+  #loader.hidden { opacity: 0; pointer-events: none; }
 
+  .spinner {
+    width: 44px;
+    height: 44px;
+    border: 4px solid rgba(255,255,255,0.15);
+    border-top-color: #D50000;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
 </style>
 </head>
-
 <body>
 
 <div id="player-wrap">
 
-<div id="loader">
-<div class="spinner"></div>
-</div>
+  <div id="loader"><div class="spinner"></div></div>
 
-<div class="wm">
-<a href="https://www.hellosports.live" target="_blank">
-<svg viewBox="0 0 24 24">
-<path d="M8 5v14l11-7z"/>
-</svg>
-HelloSports.live
-</a>
-</div>
+  <div class="wm">
+    <a href="https://www.hellosports.live" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+      HelloSports.live
+    </a>
+  </div>
 
-<div id="shaka-container" data-shaka-player-container>
-<video id="video" data-shaka-player autoplay playsinline crossorigin="anonymous"></video>
-</div>
+  <div id="error-msg">
+    <svg viewBox="0 0 24 24" fill="white">
+      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10
+        10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+    </svg>
+    <p id="error-text">No stream URL provided. Please supply a valid <code>?file=</code> or <code>?get=</code> parameter.</p>
+    <a href="https://www.hellosports.live" target="_blank" rel="noopener">Visit HelloSports.live</a>
+  </div>
+
+  <!-- CRITICAL: data-shaka-player-container on div, data-shaka-player on video -->
+  <div id="shaka-container" data-shaka-player-container data-shaka-player-cast-receiver-id="">
+    <video id="video" data-shaka-player autoplay playsinline></video>
+  </div>
 
 </div>
 
 <script>
+(function () {
+  "use strict";
 
-function param(name){
-return new URL(location.href).searchParams.get(name)||""
-}
+  function param(name) {
+    try { return new URL(window.location.href).searchParams.get(name) || ""; }
+    catch (_) { return ""; }
+  }
 
-function safeAtob(str){
-try{return atob(str)}catch(e){return str}
-}
+  function safeAtob(str) {
+    try { return atob(str); } catch (_) { return str; }
+  }
 
-const get=param("get")
-const streamUrl=get?safeAtob(get):param("file")
+  const get      = param("get");
+  const fileUrl  = get ? safeAtob(get) : param("file");
+  const ckParam  = param("ck");  // clearkey: KEYID:KEY
+  const wvParam  = param("wv");  // widevine license URL
 
-const loader=document.getElementById("loader")
+  const loader   = document.getElementById("loader");
+  const errorEl  = document.getElementById("error-msg");
+  const errorTxt = document.getElementById("error-text");
 
-if(!streamUrl){
-alert("No stream URL provided")
-throw "no stream"
-}
+  document.addEventListener("contextmenu", e => e.preventDefault());
 
-shaka.polyfill.installAll()
+  if (!fileUrl) {
+    loader.classList.add("hidden");
+    errorEl.classList.add("show");
+    return;
+  }
 
-async function init(){
+  function onPlayerError(error) {
+    console.error("Shaka Error code:", error.code, error);
+    loader.classList.add("hidden");
+    if (error.severity === shaka.util.Error.Severity.CRITICAL) {
+      errorTxt.textContent = "Stream error (code " + error.code + "). The stream may be offline or unavailable.";
+      errorEl.classList.add("show");
+    }
+  }
 
-if(!shaka.Player.isBrowserSupported()){
-alert("Browser not supported")
-return
-}
+  shaka.polyfill.installAll();
 
-const video=document.getElementById("video")
-const ui=video.ui
-const controls=ui.getControls()
-const player=controls.getPlayer()
+  shaka.Player.probeSupport().then(function () {
 
-window.player=player
+    const video    = document.getElementById("video");
+    const ui       = video["ui"];
+    const controls = ui.getControls();
+    const player   = controls.getPlayer();
 
-ui.configure({
+    window.player = player;
+    window.ui     = ui;
 
-controlPanelElements:[
-"play_pause",
-"mute",
-"volume",
-"spacer",
-"quality",
-"picture_in_picture",
-"fullscreen"
-],
+    ui.configure({
+      controlPanelElements: [
+        "play_pause", "mute", "volume", "spacer",
+        "caption", "quality", "language",
+        "picture_in_picture", "fullscreen"
+      ],
+      addSeekBar: true,
+      seekBarColors: {
+        base:   "rgba(255,255,255,0.3)",
+        played: "rgba(213,0,0,0.9)"
+      }
+    });
 
-addSeekBar:true,
+    /* DRM */
+    if (wvParam) {
+      player.configure({ drm: { servers: { "com.widevine.alpha": wvParam } } });
+    } else if (ckParam) {
+      const parts = ckParam.split(":");
+      const keyId = parts[0] || "";
+      const key   = parts[1] || "";
+      if (keyId && key) {
+        player.configure({ drm: { clearKeys: { [keyId]: key } } });
+      }
+    }
 
-seekBarColors:{
-base:"rgba(255,255,255,.3)",
-played:"rgba(213,0,0,.9)"
-}
+    player.addEventListener("error", e => onPlayerError(e.detail));
+    controls.addEventListener("error", e => onPlayerError(e.detail));
 
-})
+    player.addEventListener("trackschanged", () => {
+      const tracks = player.getVariantTracks();
+      if (tracks.length > 0) {
+        player.selectVariantTrack(tracks[tracks.length - 1], true);
+      }
+    });
 
-player.configure({
+    player.load(fileUrl).then(function () {
+      loader.classList.add("hidden");
+      video.play().catch(err => console.warn("Autoplay blocked:", err));
+    }).catch(onPlayerError);
 
-streaming:{
-lowLatencyMode:true,
-bufferingGoal:15,
-rebufferingGoal:2
-}
+  }).catch(onPlayerError);
 
-})
+  /* postMessage: swap stream from parent page */
+  window.addEventListener("message", function (ev) {
+    if (ev.data && ev.data.hsUrl && window.player) {
+      loader.classList.remove("hidden");
+      errorEl.classList.remove("show");
+      window.player.load(ev.data.hsUrl).then(function () {
+        loader.classList.add("hidden");
+        document.getElementById("video").play().catch(() => {});
+      }).catch(onPlayerError);
+    }
+  });
 
-player.getNetworkingEngine().registerRequestFilter((type,request)=>{
-
-request.headers["Referer"]=location.href
-request.headers["Origin"]=location.origin
-
-})
-
-player.addEventListener("error",e=>{
-console.error("Shaka Error",e.detail)
-})
-
-try{
-
-await player.load(streamUrl)
-
-loader.style.display="none"
-
-video.play().catch(()=>{})
-
-}catch(e){
-
-console.error(e)
-alert("Stream failed to load")
-
-}
-
-}
-
-document.addEventListener("DOMContentLoaded",init)
-
+})();
 </script>
-
 </body>
 </html>
