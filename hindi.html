@@ -3,182 +3,95 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Star Sports // CineArena </title>
+<title>Star Sports // CineArena</title>
 <meta name="referrer" content="no-referrer">
 <script src="https://cdn.jsdelivr.net/npm/shaka-player@4.16.2/dist/shaka-player.ui.min.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/shaka-player@4.16.2/dist/controls.css"/>
-
-  <!-- Google tag (gtag.js) -->
-
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-57TPN48YM8');
-</script>
-  <style>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{width:100%;height:100%;background:#000;overflow:hidden;font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif}
 
 .shaka-video-container{
-position:fixed;
-inset:0;
-background:#000;
-display:flex;
-align-items:center;
-justify-content:center;
+  position:fixed;
+  inset:0;
+  background:#000;
+  display:flex;
+  align-items:center;
+  justify-content:center;
 }
 
 video{
-width:100%;
-height:100%;
-object-fit:contain;
-background:#000;
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  background:#000;
 }
 
-.custom-watermark{
-position:absolute;
-z-index:40;
-pointer-events:none;
-top:65%;
-left:6%;
-transform:translateY(-50%);
-font-size:11px;
-font-weight:600;
-color:rgba(255,255,255,0.12);
+/* HelloSports Watermark */
+#wm{
+  position:absolute;
+  bottom:70px;
+  left:50%;
+  transform:translateX(-50%);
+  z-index:2147483647;
+  pointer-events:none;
+  user-select:none;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  opacity:.55;
+  transition:opacity .5s;
 }
+.wm-rule{width:18px;height:1px;background:linear-gradient(90deg,transparent,rgba(232,0,29,.9))}
+.wm-rule.r{background:linear-gradient(90deg,rgba(232,0,29,.9),transparent)}
+.wm-inner{display:flex;flex-direction:column;align-items:center;gap:1px}
+.wm-name{font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:4px;line-height:1;color:#fff;white-space:nowrap;text-shadow:0 1px 8px #000,0 0 24px rgba(0,0,0,.9)}
+.wm-name .r{color:#e8001d}
+.wm-url{font-family:'Rajdhani',sans-serif;font-size:9px;font-weight:600;letter-spacing:3px;color:rgba(255,255,255,.7);white-space:nowrap;text-shadow:0 1px 6px rgba(0,0,0,.9);text-transform:uppercase}
 
-/* --- Updated Modern Blocker Styles --- */
-.block-overlay{
-position:fixed;
-inset:0;
-z-index:99999;
-display:flex;
-align-items:center;
-justify-content:center;
-background:radial-gradient(circle at center, #1a1a1a 0%, #000000 100%);
-text-align:center;
-}
-
-.block-box{
-padding:40px;
-max-width:500px;
-width:90%;
-background:rgba(20, 20, 20, 0.95);
-border-radius:16px;
-border:1px solid rgba(255, 255, 255, 0.1);
-box-shadow:0 20px 50px rgba(0,0,0,0.5);
-animation: fadeInUp 0.6s ease-out;
-}
-
-@keyframes fadeInUp {
-from { opacity: 0; transform: translateY(30px); }
-to { opacity: 1; transform: translateY(0); }
-}
-
-.block-title{
-font-size:42px;
-font-weight:800;
-color:#ffffff;
-text-transform:uppercase;
-letter-spacing:2px;
-margin-bottom:20px;
-text-shadow:0 0 10px rgba(255, 0, 0, 0.3);
-}
-
-.block-sub{
-font-size:14px;
-font-weight:500;
-color:rgba(255, 255, 255, 0.6);
-line-height:1.6;
-}
-
-/* Icon hidden as requested, but keeping structure if needed later */
-.block-icon{ display: none; }
-.block-note{ display: none; }
 
 @media(max-width:700px){
-.custom-watermark{font-size:9px;top:60%;left:16%}
-.block-title{font-size:28px}
-.block-box{padding:25px}
-.block-sub{font-size:12px}
+  .block-title{font-size:28px}
+  .block-box{padding:25px}
+  .block-sub{font-size:12px}
+  #wm{bottom:60px}
+  .wm-name{font-size:13px}
 }
 </style>
-
-<script src="https://concurfortunes.com/1a/db/64/1adb6429863d074435d61fda46d99d51.js"></script>
-	
 </head>
 <body>
 
 <div class="shaka-video-container" id="player-container">
-<video id="video" autoplay muted playsinline preload="metadata"></video>
-<div class="custom-watermark"></div>
+  <video id="video" autoplay muted playsinline preload="metadata"></video>
+  <div id="wm">
+    <div class="wm-rule"></div>
+    <div class="wm-inner">
+      <div class="wm-name">HELLO<span class="r">SPORTS</span></div>
+      <div class="wm-url">hellosports.live</div>
+    </div>
+    <div class="wm-rule r"></div>
+  </div>
 </div>
 
 <script>
 (function(){
-  
-  function isSandboxedEnv(){
-    try {
-      if (window.self === window.top) return false;
-      if (window.frameElement && window.frameElement.hasAttribute("sandbox")) {
-        return true;
-      }
-      try {
-        document.domain = document.domain;
-        if (window.frameElement && !window.frameElement.getAttribute("sandbox")) {
-             return false;
-        }
-      } catch (e) {
-         return true;
-      }
-      return false;
-    } catch(e) {
-      return true;
-    }
-  }
-  function triggerBlockScreen(title, message){
-    const container = document.getElementById("player-container");
-    const video = document.getElementById("video");
-    
-    try {
-      video.pause();
-      video.removeAttribute('src');
-      video.load();
-    } catch(e){}
 
-    const overlay = document.createElement("div");
-    overlay.className = "block-overlay";
-    overlay.id = "sandbox-block-display";
-    overlay.innerHTML = `
-      <div class="block-box">
-        <div class="block-title">${title}</div>
-        <div class="block-sub">${message}</div>
-      </div>
-    `;
-    document.body.appendChild(overlay);
-    container.style.display = 'none';
-  }
-  if(isSandboxedEnv()){
-
-    triggerBlockScreen('Disable Sandbox', 'Opening Chrome Browser Only & Disable Ad blocker');
-    return;
-  }
   const CONFIG={
     streamUrl:"https://jiotvioslive.cdn.jio.com/bpk-tv/Star_Sports_HD1_Hindi_BTS/output/index.mpd",
     keyId:"400131994b445d8c8817202248760fda",
     key:"2d56cb6f07a75b9aff165d534ae2bfc4",
     cookieUrl:"https://allrounder-live4.pages.dev/api/cookie.json"
   };
-	
-  document.addEventListener("DOMContentLoaded",async()=>{
+
+  document.addEventListener("DOMContentLoaded", async()=>{
 
     shaka.polyfill.installAll();
     if(!shaka.Player.isBrowserSupported()) return;
 
     const video=document.getElementById("video");
     const container=document.getElementById("player-container");
+    const wm=document.getElementById("wm");
 
     video.muted=true;
 
@@ -188,22 +101,13 @@ line-height:1.6;
     const ui=new shaka.ui.Overlay(player,container,video);
 
     ui.configure({
-  addBigPlayButton: true,
-  controlPanelElements: [
-    "mute",           // First - volume/mute button
-    "play_pause",     // Second - play/pause button  
-    "time_and_duration", // Third - timeline timings (00:00 / 00:00)
-    "spacer",
-    "quality",
-    "picture_in_picture",
-    "fullscreen"
-  ],
-  seekBarColors: {
-    base: "white",
-    buffered: "red", 
-    played: "green"
-  }
-});
+      addBigPlayButton:true,
+      controlPanelElements:["mute","play_pause","time_and_duration","spacer","quality","picture_in_picture","fullscreen"],
+      seekBarColors:{base:"white",buffered:"red",played:"green"}
+    });
+
+    // Re-inject watermark above UI controls
+    setTimeout(()=>container.appendChild(wm), 100);
 
     player.configure({
       drm:{clearKeys:{[CONFIG.keyId]:CONFIG.key}},
@@ -212,43 +116,82 @@ line-height:1.6;
         lowLatencyMode:true,
         bufferingGoal:10,
         rebufferingGoal:2,
-        safeSeekOffset:5
+        safeSeekOffset:5,
+        retryParameters:{maxAttempts:3,baseDelay:500,backoffFactor:2}
       }
     });
 
+    // CORS proxy fallback list
+    const PROXIES=[
+      url=>`https://corsproxy.io/?${encodeURIComponent(url)}`,
+      url=>`https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
+      url=>`https://cors-anywhere.herokuapp.com/${url}`,
+    ];
+
+    async function smartFetch(url,asJson=true){
+      try{
+        const r=await fetch(url,{cache:"no-store"});
+        if(r.ok) return asJson?r.json():r.text();
+      }catch{}
+      for(const proxy of PROXIES){
+        try{
+          const r=await fetch(proxy(url),{cache:"no-store"});
+          if(r.ok) return asJson?r.json():r.text();
+        }catch{}
+      }
+      throw new Error("All fetch attempts failed");
+    }
+
     let cookieValue="";
-
     try{
-      const response=await fetch(CONFIG.cookieUrl,{cache:"no-store"});
-      const data=await response.json();
+      const data=await smartFetch(CONFIG.cookieUrl);
       cookieValue=data.cookie||"";
-    }catch(e){}
+    }catch(e){ console.warn("Cookie fetch failed:",e.message); }
 
-    if(cookieValue){
-      player.getNetworkingEngine().registerRequestFilter((type,request)=>{
-        request.headers["Referer"]="https://www.jiotv.com/";
-        request.headers["User-Agent"]="plaYtv/7.1.5 (Linux;Android 13) ExoPlayerLib/2.11.6";
+    // Always register filter — headers sent regardless of cookie
+    player.getNetworkingEngine().registerRequestFilter((type,request)=>{
+      request.headers["Referer"]="https://www.jiotv.com/";
+      request.headers["Origin"]="https://www.jiotv.com";
+      request.headers["User-Agent"]="plaYtv/7.1.5 (Linux;Android 13) ExoPlayerLib/2.11.6";
+      if(cookieValue){
         request.headers["Cookie"]=cookieValue;
-
         let urlCookie=cookieValue.startsWith("__hdnea__=")?cookieValue.substring(10):cookieValue;
-
         if((type===shaka.net.NetworkingEngine.RequestType.MANIFEST||
-        type===shaka.net.NetworkingEngine.RequestType.SEGMENT)&&
-        !request.uris[0].includes("__hdnea__")){
+            type===shaka.net.NetworkingEngine.RequestType.SEGMENT)&&
+            !request.uris[0].includes("__hdnea__")){
           const sep=request.uris[0].includes("?")?"&":"?";
           request.uris[0]+=sep+"__hdnea__="+urlCookie;
         }
-      });
-    }
+      }
+    });
 
     try{
       await player.load(CONFIG.streamUrl);
       video.play().catch(()=>{});
     }catch(e){}
 
-    video.addEventListener("play",()=>{
-      video.muted=false;
-    });
+    video.addEventListener("play",()=>{ video.muted=false; });
+
+    // Fullscreen watermark fix
+    const onFsChange=()=>{
+      const fsEl=document.fullscreenElement||document.webkitFullscreenElement||document.mozFullScreenElement;
+      if(fsEl){ fsEl.appendChild(wm); wm.style.opacity='.50'; }
+      else{ container.appendChild(wm); wm.style.opacity='.55'; }
+    };
+    document.addEventListener('fullscreenchange',onFsChange);
+    document.addEventListener('webkitfullscreenchange',onFsChange);
+    document.addEventListener('mozfullscreenchange',onFsChange);
+
+    // Watermark fade behaviour
+    video.addEventListener('play',()=>setTimeout(()=>{ wm.style.opacity='.30'; },3000));
+    video.addEventListener('pause',()=>{ wm.style.opacity='.55'; });
+    const resetWm=()=>{
+      wm.style.opacity='.55';
+      clearTimeout(window._wmTimer);
+      window._wmTimer=setTimeout(()=>{ if(!video.paused) wm.style.opacity='.30'; },3000);
+    };
+    document.addEventListener('mousemove',resetWm);
+    document.addEventListener('touchstart',resetWm);
 
   });
 })();
